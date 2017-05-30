@@ -16,10 +16,19 @@ import pickle
 
 
 # 2
-model_dir = 'imagenet'
-images_dir = 'images/'
-list_images = [images_dir+f for f in os.listdir(images_dir) if re.search('jpg|JPG', f)]
+model_dir = '/home/ubuntu/src/tensorflow/tensorflow/models/image/imagenet/TUTORIAL_DIR/imagenet'
 
+images_dir = 'test/' #For Test 
+list_images = [images_dir+f for f in os.listdir(images_dir) if re.search('jpg|JPG', f)]
+ 
+#images_dir = 'train/' 
+#list_images_start = []
+#list_images = []
+#list_images_start = [images_dir+f for f in os.listdir(images_dir)]
+#for i in range(len(list_images_start)):
+#    list_images += [list_images_start[i]+'/'+f for f in os.listdir(list_images_start[i]) if re.search('jpg|JPG', f)]
+
+# print(list_images)
 
 # 3
 def create_graph():
@@ -47,11 +56,10 @@ def extract_features(list_images):
                 print('Processing %s...' % (image))
             if not gfile.Exists(image):
                 tf.logging.fatal('File does not exist %s', image)
-
-    image_data = gfile.FastGFile(image, 'rb').read()
-    predictions = sess.run(next_to_last_tensor,{'DecodeJpeg/contents:0': image_data})
-    features[ind,:] = np.squeeze(predictions)
-    labels.append(re.split('_\d+',image.split('/')[1])[0])
+	    image_data = gfile.FastGFile(image, 'rb').read()
+            predictions = sess.run(next_to_last_tensor,{'DecodeJpeg/contents:0': image_data})
+            features[ind,:] = np.squeeze(predictions)
+            labels.append(re.split('_\d+',image.split('/')[1])[0])
 
     return features, labels
 
@@ -65,39 +73,39 @@ pickle.dump(features, open('features', 'wb'))
 pickle.dump(labels, open('labels', 'wb'))
 
 #7
-features = pickle.load(open('features'))
-labels = pickle.load(open('labels'))
+#features = pickle.load(open('features'))
+#labels = pickle.load(open('labels'))
 
 
 #8
-X_train, X_test, y_train, y_test = cross_validation.train_test_split(features, labels, test_size=0.2, random_state=42)
+#X_train, X_test, y_train, y_test = cross_validation.train_test_split(features, labels, test_size=0.2, random_state=42)
 
 #9
-clf = LinearSVC(C=1.0, loss='squared_hinge', penalty='l2',multi_class='ovr')
-clf.fit(X_train, y_train)
-y_pred = clf.predict(X_test)
+#clf = LinearSVC(C=1.0, loss='squared_hinge', penalty='l2',multi_class='ovr')
+#clf.fit(X_train, y_train)
+#y_pred = clf.predict(X_test)
 
 #10
-def plot_confusion_matrix(y_true,y_pred):
-    cm_array = confusion_matrix(y_true,y_pred)
-    true_labels = np.unique(y_true)
-    pred_labels = np.unique(y_pred)
-    plt.imshow(cm_array[:-1,:-1], interpolation='nearest', cmap=plt.cm.Blues)
-    plt.title("Confusion matrix", fontsize=16)
-    cbar = plt.colorbar(fraction=0.046, pad=0.04)
-    cbar.set_label('Number of images', rotation=270, labelpad=30, fontsize=12)
-    xtick_marks = np.arange(len(true_labels))
-    ytick_marks = np.arange(len(pred_labels))
-    plt.xticks(xtick_marks, true_labels, rotation=90)
-    plt.yticks(ytick_marks,pred_labels)
-    plt.tight_layout()
-    plt.ylabel('True label', fontsize=14)
-    plt.xlabel('Predicted label', fontsize=14)
-    fig_size = plt.rcParams["figure.figsize"]
-    fig_size[0] = 12
-    fig_size[1] = 12
-    plt.rcParams["figure.figsize"] = fig_size
+#def plot_confusion_matrix(y_true,y_pred):
+#    cm_array = confusion_matrix(y_true,y_pred)
+#    true_labels = np.unique(y_true)
+#    pred_labels = np.unique(y_pred)
+#    plt.imshow(cm_array[:-1,:-1], interpolation='nearest', cmap=plt.cm.Blues)
+#    plt.title("Confusion matrix", fontsize=16)
+#    cbar = plt.colorbar(fraction=0.046, pad=0.04)
+#    cbar.set_label('Number of images', rotation=270, labelpad=30, fontsize=12)
+#    xtick_marks = np.arange(len(true_labels))
+#    ytick_marks = np.arange(len(pred_labels))
+#    plt.xticks(xtick_marks, true_labels, rotation=90)
+#    plt.yticks(ytick_marks,pred_labels)
+#    plt.tight_layout()
+#    plt.ylabel('True label', fontsize=14)
+#    plt.xlabel('Predicted label', fontsize=14)
+#    fig_size = plt.rcParams["figure.figsize"]
+#    fig_size[0] = 12
+#    fig_size[1] = 12
+#    plt.rcParams["figure.figsize"] = fig_size
 
 #12
-print("Accuracy: {0:0.1f}%".format(accuracy_score(y_test,y_pred)*100))
-plot_confusion_matrix(y_test,y_pred)
+#print("Accuracy: {0:0.1f}%".format(accuracy_score(y_test,y_pred)*100))
+#plot_confusion_matrix(y_test,y_pred)
