@@ -1,4 +1,8 @@
 
+# Image classification with a pre-trained deep neural network
+# https://www.kernix.com/blog/image-classification-with-a-pre-trained-deep-neural-network_p11 
+
+
 import os
 import re
 import tensorflow as tf
@@ -16,10 +20,15 @@ import pickle
 
 
 # 2
-model_dir = '/home/ubuntu/src/tensorflow/tensorflow/models/image/imagenet/TUTORIAL_DIR/imagenet'
 
+# Get Listing of all Test images 
+
+model_dir = '/home/ubuntu/src/tensorflow/tensorflow/models/image/imagenet/TUTORIAL_DIR/imagenet'
 images_dir = 'test/' #For Test 
 list_images = [images_dir+f for f in os.listdir(images_dir) if re.search('jpg|JPG', f)]
+
+
+# Get Listing of all TRAIN images 
  
 #images_dir = 'train/' 
 #list_images_start = []
@@ -71,6 +80,8 @@ features,labels = extract_features(list_images)
 #6
 pickle.dump(features, open('features', 'wb'))
 pickle.dump(labels, open('labels', 'wb'))
+
+##################### Next step in KernixBlog.ipynb 
 
 #7
 #features = pickle.load(open('features'))
