@@ -5,7 +5,7 @@ The goal of the data challenge is to learn how to use machine learning algorithm
 understanding about them. The task is to perform bird species classification.
 
 ## File Location:
-* Files Location: https://github.com/abhishekanand/data558 (I will my project for my Polished code release)
+* Files Location: https://github.com/abhishekanand/data558 
 * Features & Labels location: https://1drv.ms/f/s!AqCnIq3kIKGhl_JD0hMlknOwRxls1Q 
 
 ### Code File: /Src/
